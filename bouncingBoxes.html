@@ -1,0 +1,53 @@
+<! DOCTYPE html>
+<html>
+<head>
+  <title>bouncingBoxes</title>
+</head>
+<body>
+
+  <h1>Bouncing Boxes</h1>
+  <h2>Canvas</h2>
+<canvas id="canvas" width="500" height="300" style="border: 3px solid brown; "></canvas>
+
+
+<script>
+
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
+const points = [];
+const NUM_POINTS = 8;
+const colors = ["black","white","red","orange", "yellow","brown"];
+for(let i = 0; i < NUM_POINTS; i++) {
+  points.push({
+    x: Math.random() * (canvas.width - 20) + 10,
+    y: Math.random() * (canvas.height - 20) + 10,
+    width: Math.random() * 15 + 15,
+    height: Math.random() * 15 + 15,
+    xDirection: Math.random() > 0.5 ? 1 : -1,
+    yDirection: Math.random() > 0.5 ? 1 : -1,
+    speed: Math.random() * 5,
+    color: colors[Math.round(Math.random() * 7)]
+  });
+}
+const draw = function(point) {
+  ctx.fillStyle=point.color;
+  if((point.x+point.width)>=canvas.width || point.x<=0)
+    point.xDirection=-point.xDirection;
+  if((point.y+point.height)>=canvas.height || point.y<=0)
+    point.yDirection=-point.yDirection;
+  point.x+=point.xDirection*point.speed;
+  point.y+=point.yDirection*point.speed;
+  ctx.fillRect(point.x, point.y, point.width, point.height);
+};
+let animate = function() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for(let ii=0; ii<points.length; ++ii){
+    draw(points[ii]);
+  };
+  setTimeout(animate, 10);
+};
+animate();
+</script>
+</body>
+</html>
